@@ -35,19 +35,19 @@ router.get("/manage", (req, res)=>{
     })
 })
 
-router.get("/:id", (req, res)=>{
-    const product_id = req.params.id
+// router.get("/:id", (req, res)=>{
+//     const product_id = req.params.id
 
-    Product.findOne({_id: product_id}).exec((err, doc)=>{ 
-        console.log("Show Product: ", doc.name)
-        if(err){
-            console.log("Error show product: ", err)
-        }else{
-            res.render("product",{item: doc})
-        }
-    })
+//     Product.findOne({_id: product_id}).exec((err, doc)=>{ 
+//         console.log("Show Product: ", doc.name)
+//         if(err){
+//             console.log("Error show product: ", err)
+//         }else{
+//             res.render("product",{item: doc})
+//         }
+//     })
     
-})
+// })
 
 router.get("/save", (req, res)=>{
     console.log(req.query.description)
