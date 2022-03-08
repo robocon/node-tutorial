@@ -17,11 +17,11 @@
                 <div class="col-lg-2"></div>
                 <div class="col-lg-8">
                     <div class="card mt-4">
-                        <img class="card-img-top img-fluid" src="images/products/product1.png" alt="" />
+                        <img class="card-img-top img-fluid" src="images/products/<%=item.image%>" alt="" />
                         <div class="card-body">
-                            <h3 class="card-title">ชื่อสินค้า</h3>
-                            <h4>ราคาสินค้า</h4>
-                            <p class="card-text">รายละเอียดสินค้าLorem ipsum dolor sit amet consectetur, adipisicing elit. Corporis quo quibusdam iste amet tempora aliquid veniam, enim dolor beatae! Necessitatibus officiis reiciendis mollitia ullam velit fuga earum minima illo cumque?</p>
+                            <h3 class="card-title"><%=item.name%></h3>
+                            <h4>ราคา <%=item.price%> บาท</h4>
+                            <p class="card-text"><%=item.description%></p>
                         </div>
                     </div>
                 </div>
