@@ -25,14 +25,57 @@ router.get("/", (req, res)=>{
     })
 })
 
-router.get("/form", (req, res)=>{
-    res.render("form")
+router.get("/form", (req, res)=>{ 
+    if (req.cookies.login) {
+        res.render("form")
+    }else{
+        res.render("admin")
+    }
 })
 
-router.get("/manage", (req, res)=>{
-    Product.find().exec((err, doc)=>{
-        res.render("manage", {products: doc})
-    })
+router.get("/manage", (req, res)=>{ 
+    if (req.cookies.login) {
+        Product.find().exec((err, doc)=>{
+            res.render("manage", {products: doc})
+        })
+    }else{
+        res.render("admin")
+    }
+})
+
+router.get("/admin", (req, res)=>{ 
+    if (req.cookies.login) {
+        res.redirect("/manage")
+    }else{
+        res.render("admin")
+    }
+})
+
+router.post("/login", (req, res)=>{ 
+    if (req.cookies.login) {
+        res.redirect("/manage")
+    }
+
+    const username = req.body.username
+    const password = req.body.password
+    const timeexpire = 1000*((60*60)*24)
+    if (username === "admin" && password === "1234") {
+        res.cookie("username", username, {maxAge: timeexpire})
+        res.cookie("password", password, {maxAge: timeexpire})
+        res.cookie("login", true, {maxAge: timeexpire})
+        res.redirect("/manage")
+    }else{
+        res.render("404")
+    }
+})
+
+router.get("/logout", (req, res)=>{ 
+    if (req.cookies.login) {
+        res.clearCookie("username")
+        res.clearCookie("password")
+        res.clearCookie("login")
+    }
+    res.redirect("/admin")
 })
 
 // router.get("/:id", (req, res)=>{
