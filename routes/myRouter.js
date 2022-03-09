@@ -26,21 +26,32 @@ router.get("/", (req, res)=>{
 })
 
 router.get("/form", (req, res)=>{ 
-    if (req.cookies.login) {
-        res.render("form")
-    }else{
-        res.render("admin")
-    }
+    // if (req.cookies.login) {
+    //     res.render("form")
+    // }else{
+    //     res.render("admin")
+    // }
+
+    res.render("admin")
 })
 
 router.get("/manage", (req, res)=>{ 
-    if (req.cookies.login) {
-        Product.find().exec((err, doc)=>{
-            res.render("manage", {products: doc})
-        })
-    }else{
-        res.render("admin")
-    }
+
+    // if (req.cookies.login) {
+    //     Product.find().exec((err, doc)=>{
+    //         res.render("manage", {products: doc})
+    //     })
+    // }else{
+    //     res.render("admin")
+    // }
+
+    console.log("session id", req.sessionID)
+    console.log("ข้อมูลใน session ",req.session)
+
+    Product.find().exec((err, doc)=>{
+        res.render("manage", {products: doc})
+    })
+
 })
 
 router.get("/admin", (req, res)=>{ 
@@ -60,9 +71,15 @@ router.post("/login", (req, res)=>{
     const password = req.body.password
     const timeexpire = 1000*((60*60)*24)
     if (username === "admin" && password === "1234") {
-        res.cookie("username", username, {maxAge: timeexpire})
-        res.cookie("password", password, {maxAge: timeexpire})
-        res.cookie("login", true, {maxAge: timeexpire})
+        // res.cookie("username", username, {maxAge: timeexpire})
+        // res.cookie("password", password, {maxAge: timeexpire})
+        // res.cookie("login", true, {maxAge: timeexpire})
+
+        req.session.username = username
+        req.session.password = password
+        req.session.login = true
+        req.session.cookie.maxAge = timeexpire
+
         res.redirect("/manage")
     }else{
         res.render("404")
@@ -75,6 +92,11 @@ router.get("/logout", (req, res)=>{
         res.clearCookie("password")
         res.clearCookie("login")
     }
+
+    req.session.destroy((err)=>{
+        console.log(err)
+    })
+
     res.redirect("/admin")
 })
 

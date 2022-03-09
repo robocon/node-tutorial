@@ -1,6 +1,7 @@
 const express = require('express')
 const path = require('path')
 const cookieParser = require("cookie-parser")
+const session = require("express-session")
 const app = express()
 const router = require("./routes/myRouter")
 
@@ -10,6 +11,11 @@ app.set("view engine","ejs")
 // สำหรับ POST Method
 app.use(express.urlencoded({extended: false}))
 app.use(cookieParser())
+app.use(session({
+    secret:"mysession",
+    resave:false,
+    saveUninitialized:false
+}))
 app.use(router)
 
 // ตั้งค่า static file ไว้ที่ folder public
